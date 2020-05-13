@@ -15,6 +15,7 @@ class SettingsViewController: UIViewController {
     private let lock = Lock()
     private let keystore: Keystore
     private let account: Wallet
+    private let analyticsCoordinator: AnalyticsCoordinator?
     private let promptBackupWalletViewHolder = UIView()
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
@@ -54,13 +55,11 @@ class SettingsViewController: UIViewController {
         view = tableView
     }
 
-    init(keystore: Keystore, account: Wallet) {
+    init(keystore: Keystore, account: Wallet, analyticsCoordinator: AnalyticsCoordinator?) {
         self.keystore = keystore
         self.account = account
+        self.analyticsCoordinator = analyticsCoordinator
         super.init(nibName: nil, bundle: nil)
-
-        tableView.dataSource = self
-        tableView.delegate = self
     }
 
     override func viewDidLoad() {
@@ -189,7 +188,7 @@ extension SettingsViewController: UITableViewDataSource {
                 cell.configure(viewModel: viewModel)
             case .backup:
                 cell.configure(viewModel: .init(settingsWalletRow: row))
-                let walletSecurityLevel = PromptBackupCoordinator(keystore: self.keystore, wallet: self.account, config: .init()).securityLevel
+                let walletSecurityLevel = PromptBackupCoordinator(keystore: self.keystore, wallet: self.account, config: .init(), analyticsCoordinator: analyticsCoordinator).securityLevel
                 cell.accessoryView = walletSecurityLevel.flatMap { WalletSecurityLevelIndicator(level: $0) }
                 cell.accessoryType = .disclosureIndicator
             default:

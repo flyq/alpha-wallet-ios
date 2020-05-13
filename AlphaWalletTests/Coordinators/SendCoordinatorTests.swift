@@ -5,7 +5,7 @@ import XCTest
 import TrustKeystore
 
 class SendCoordinatorTests: XCTestCase {
-    
+
     func testRootViewController() {
         let coordinator = SendCoordinator(
             transferType: .nativeCryptocurrency(server: .main, destination: .none, amount: nil),
@@ -15,7 +15,8 @@ class SendCoordinatorTests: XCTestCase {
             storage: FakeTokensDataStore(),
             account: .make(),
             ethPrice: Subscribable<Double>(nil),
-            assetDefinitionStore: AssetDefinitionStore()
+            assetDefinitionStore: AssetDefinitionStore(),
+            analyticsCoordinator: nil
         )
 
         coordinator.start()
@@ -33,7 +34,8 @@ class SendCoordinatorTests: XCTestCase {
             storage: FakeTokensDataStore(),
             account: .make(),
             ethPrice: Subscribable<Double>(nil),
-            assetDefinitionStore: AssetDefinitionStore()
+            assetDefinitionStore: AssetDefinitionStore(),
+            analyticsCoordinator: nil
         )
         coordinator.start()
 
